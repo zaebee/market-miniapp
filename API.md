@@ -228,7 +228,13 @@ curl -X POST http://localhost:1337/api/articles \
       "description": "Article description",
       "slug": "my-new-article",
       "author": 1,
-      "category": 1
+      "category": 1,
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "body": "# Article Content"
+        }
+      ]
     }
   }'
 ```

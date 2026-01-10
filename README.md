@@ -27,6 +27,12 @@ For detailed installation and database configuration, see [SETUP.md](SETUP.md).
 - [SETUP.md](SETUP.md) - Installation, environment setup, and production deployment.
 - [API.md](API.md) - REST API endpoints, filtering, sorting, and authentication.
 - [CONTENT-STRUCTURE.md](CONTENT-STRUCTURE.md) - Data models, components, and content workflows.
+- [DEVELOPMENT.md](DEVELOPMENT.md) - Backend customization, custom logic, and scripts.
+
+## Resources
+
+- [Strapi Documentation](https://docs.strapi.io) - Official Strapi guides.
+- [Strapi API Reference](https://docs.strapi.io/dev-docs/api/rest) - Detailed REST API documentation.
 
 ## API Usage Example
 
@@ -37,14 +43,7 @@ curl http://localhost:1337/api/articles
 
 ## Development
 
-### Available Scripts
-
-- `npm run develop` - Start development server.
-- `npm run build` - Build admin panel.
-- `npm run start` - Start production server.
-- `npm run seed:example` - Populate database with demo data.
-
-For more development guidelines, see the [Development](#development-1) section.
+For available scripts and backend customization guidelines, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## License
 
