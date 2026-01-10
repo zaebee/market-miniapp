@@ -28,7 +28,8 @@
       "required": true
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "bedrooms": {
       "type": "integer",
@@ -52,13 +53,15 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::agent.agent",
-      "inversedBy": "apartments"
+      "inversedBy": "apartments",
+      "required": true
     },
     "city": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::city.city",
-      "inversedBy": "apartments"
+      "inversedBy": "apartments",
+      "required": true
     }
   }
 }

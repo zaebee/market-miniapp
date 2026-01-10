@@ -21,7 +21,8 @@
       "targetField": "name"
     },
     "country": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "region": {
       "type": "string"

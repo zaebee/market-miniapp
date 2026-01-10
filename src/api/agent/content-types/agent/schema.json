@@ -17,10 +17,13 @@
       "required": true
     },
     "email": {
-      "type": "email"
+      "type": "email",
+      "required": true,
+      "unique": true
     },
     "phone": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "avatar": {
       "type": "media",
