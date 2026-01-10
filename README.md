@@ -28,6 +28,7 @@ For detailed installation and database configuration, see [SETUP.md](SETUP.md).
 - [API.md](API.md) - REST API endpoints, filtering, sorting, and authentication.
 - [CONTENT-STRUCTURE.md](CONTENT-STRUCTURE.md) - Data models, components, and content workflows.
 - [DEVELOPMENT.md](DEVELOPMENT.md) - Backend customization, custom logic, and scripts.
+- [AGENTS.md](AGENTS.md) - Beads agent workflow, development process, and quality gates.
 
 ## Resources
 
