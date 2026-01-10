@@ -137,7 +137,7 @@ This project uses ephemeral feature branches:
 - **No Upstream Tracking**: Branch exists locally and on origin but not tracking main
 - **Sync Command**: Use `bd sync --from-main` instead of `git pull`
 - **Push Requirements**: Must explicitly push to origin before creating PR
-- **Branch Lifecycle**: Tied to issue/feature completion, then merged locally to main
+- **Branch Lifecycle**: Tied to issue/feature completion, then merged via Pull Request
 
 ### Typical Workflow
 
@@ -211,7 +211,7 @@ A Strapi v5.33.2 headless CMS built with TypeScript for managing blog content an
 
 ### Recent Implementations
 
-**Real Estate Entities** (commits faecd25, b6c1c1b):
+**Real Estate Entities**:
 - **Agent**: Real estate agents with name, email, phone, avatar, bio
 - **Apartment**: Property listings with relations to agents and cities
 - **City**: Location data for apartments
