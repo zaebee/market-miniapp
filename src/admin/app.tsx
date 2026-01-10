@@ -7,6 +7,6 @@ export default {
   },
   bootstrap(app: StrapiApp) {
     // Register the Vibe Kanban Web Companion component to render at the app root
-    app.registerHook('Admin/Root', () => VibeKanbanWebCompanion);
+    app.registerHook('Admin/Root', () => <VibeKanbanWebCompanion />);
   },
 };
