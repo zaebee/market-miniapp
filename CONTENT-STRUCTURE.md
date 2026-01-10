@@ -721,14 +721,13 @@ curl "http://localhost:1337/api/articles?filters[category][slug][$eq]=technology
 
 1. **Create Author** (if not exists)
 2. **Create Category** (if not exists)
-3. **Upload Cover Image**
-4. **Create Article**:
+3. **Create Article**:
    - Add title and description
    - Link to author and category
    - Upload cover image
    - Add content blocks
-5. **Save as Draft** for review
-6. **Publish** when ready
+4. **Save as Draft** for review
+5. **Publish** when ready
 
 ### Managing Content States
 

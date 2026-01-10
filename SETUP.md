@@ -43,7 +43,7 @@ If Node.js is not installed, download it from: https://nodejs.org/
 If using Git:
 
 ```bash
-git clone <repository-url>
+git clone <repository-url>  # Replace <repository-url> with the actual repository URL
 cd market-miniapp
 ```
 

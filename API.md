@@ -226,7 +226,9 @@ curl -X POST http://localhost:1337/api/articles \
     "data": {
       "title": "My New Article",
       "description": "Article description",
-      "slug": "my-new-article"
+      "slug": "my-new-article",
+      "author": 1,
+      "category": 1
     }
   }'
 ```
