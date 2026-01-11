@@ -843,6 +843,30 @@ PUT /api/agents/:id
 
 **Authentication:** Required
 
+**Request Body:**
+
+```json
+{
+  "data": {
+    "phone": "+1-555-0789",
+    "bio": "Updated agent biography."
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X PUT http://localhost:1337/api/agents/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "phone": "+1-555-0789"
+    }
+  }'
+```
+
 ### Delete Agent
 
 ```http
@@ -850,6 +874,13 @@ DELETE /api/agents/:id
 ```
 
 **Authentication:** Required
+
+**Example:**
+
+```bash
+curl -X DELETE http://localhost:1337/api/agents/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
 
 ## Cities
 
@@ -1004,6 +1035,29 @@ PUT /api/cities/:id
 
 **Authentication:** Required
 
+**Request Body:**
+
+```json
+{
+  "data": {
+    "description": "An updated description for the city."
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X PUT http://localhost:1337/api/cities/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "description": "An updated description for the city."
+    }
+  }'
+```
+
 ### Delete City
 
 ```http
@@ -1011,6 +1065,13 @@ DELETE /api/cities/:id
 ```
 
 **Authentication:** Required
+
+**Example:**
+
+```bash
+curl -X DELETE http://localhost:1337/api/cities/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
 
 ## Global Settings
 

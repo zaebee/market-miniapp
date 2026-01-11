@@ -146,7 +146,7 @@ Articles support the draft/publish workflow:
 
 ```bash
 curl -X POST http://localhost:1337/api/articles \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -238,7 +238,7 @@ Content creator profiles with relationships to their articles.
 
 ```bash
 curl -X POST http://localhost:1337/api/authors \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -311,7 +311,7 @@ Content organization taxonomy with relationships to articles.
 
 ```bash
 curl -X POST http://localhost:1337/api/categories \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -427,7 +427,7 @@ Apartments support the draft/publish workflow:
 
 ```bash
 curl -X POST http://localhost:1337/api/apartments \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -521,7 +521,7 @@ Real estate agent profiles with contact information and portfolio tracking.
 
 ```bash
 curl -X POST http://localhost:1337/api/agents \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -610,7 +610,7 @@ Geographic location directory with country/region organization.
 
 ```bash
 curl -X POST http://localhost:1337/api/cities \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -691,7 +691,7 @@ Site-wide configuration and default SEO settings. Only one entry exists.
 
 ```bash
 curl -X PUT http://localhost:1337/api/global \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -1236,7 +1236,7 @@ Apartments support draft and publish states:
 2. **Assign Apartment to Different Agent**:
    ```bash
    curl -X PUT "http://localhost:1337/api/apartments/1" \
-     -H "Authorization: Bearer YOUR_TOKEN" \
+     -H "Authorization: Bearer YOUR_API_TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"data": {"agent": 2}}'
    ```
