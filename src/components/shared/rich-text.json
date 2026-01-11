@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Rich text",
     "icon": "align-justify",
-    "description": ""
+    "description": "A reusable rich text component for body content with formatting support"
   },
   "options": {},
   "attributes": {
