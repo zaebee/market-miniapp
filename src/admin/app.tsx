@@ -4,7 +4,7 @@ export default {
   config: {
     locales: [],
   },
-  bootstrap(app: StrapiApp) {
+  bootstrap(_app: StrapiApp) {
     // Bootstrap function for admin panel customization
   },
 };
