@@ -1,18 +1,31 @@
 # Market MiniApp
 
-A blog content management platform built with Strapi v5.33.2. This headless CMS provides a complete blogging solution with article management, author profiles, content categorization, and SEO optimization.
+A dual-purpose content management platform built with Strapi v5.33.2. This headless CMS provides both a blogging solution with article management and a real estate marketplace platform with property listings, agent profiles, and location-based search.
 
 ## Overview
 
-Market MiniApp is a TypeScript-based Strapi application that enables content creators to manage blog articles, authors, and categories through a modern admin interface while exposing a RESTful API for content consumption.
+Market MiniApp is a TypeScript-based Strapi application that combines two primary features:
+
+1. **Blog Platform**: Manage articles, authors, and categories through a modern admin interface
+2. **Real Estate Marketplace**: List apartments, manage real estate agents, and organize properties by city
+
+Both features expose RESTful APIs for content consumption and third-party integrations.
 
 ### Key Features
 
+#### Blog Features
 - **Article Management**: Rich content blocks and draft/publish workflows.
 - **Author System**: Profiles with avatars and contact information.
 - **Categorization**: Organized content taxonomy.
 - **SEO Optimization**: Built-in metadata for articles and pages.
 - **Dynamic Content**: Support for media, quotes, rich text, and sliders.
+
+#### Real Estate Features
+- **Apartment Listings**: Property management with pricing, location, images, and detailed specifications (bedrooms, bathrooms, area).
+- **Agent Profiles**: Real estate agent management with contact information, bio, and portfolio tracking.
+- **City Directory**: Geographic organization with country/region categorization.
+- **Relationship Management**: Link apartments to agents and cities for structured data queries.
+- **Draft/Publish Workflow**: Control apartment listing visibility with draft states.
 
 ## Quick Start
 
@@ -35,11 +48,16 @@ For detailed installation and database configuration, see [SETUP.md](SETUP.md).
 - [Strapi Documentation](https://docs.strapi.io) - Official Strapi guides.
 - [Strapi API Reference](https://docs.strapi.io/dev-docs/api/rest) - Detailed REST API documentation.
 
-## API Usage Example
+## API Usage Examples
 
 ```bash
-# Fetch all published articles
+# Blog API
 curl http://localhost:1337/api/articles
+
+# Real Estate API
+curl http://localhost:1337/api/apartments?populate=*
+curl http://localhost:1337/api/agents
+curl http://localhost:1337/api/cities
 ```
 
 ## Development

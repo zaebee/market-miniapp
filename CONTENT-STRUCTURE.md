@@ -14,12 +14,19 @@ This document provides detailed information about the content types, components,
 
 ## Content Types Overview
 
-Market MiniApp has 5 content types:
+Market MiniApp has 8 content types split between blog and real estate features:
 
 **Collection Types** (multiple entries):
+
+Blog:
 - Articles - Blog posts
 - Authors - Content creators
 - Categories - Content organization
+
+Real Estate:
+- Apartments - Property listings
+- Agents - Real estate agents
+- Cities - Location directory
 
 **Single Types** (one entry only):
 - Global - Site-wide settings
@@ -139,7 +146,7 @@ Articles support the draft/publish workflow:
 
 ```bash
 curl -X POST http://localhost:1337/api/articles \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -231,7 +238,7 @@ Content creator profiles with relationships to their articles.
 
 ```bash
 curl -X POST http://localhost:1337/api/authors \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -304,13 +311,314 @@ Content organization taxonomy with relationships to articles.
 
 ```bash
 curl -X POST http://localhost:1337/api/categories \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
       "name": "Programming",
       "slug": "programming",
       "description": "Programming tutorials and guides"
+    }
+  }'
+```
+
+### Apartments
+
+Real estate property listings with detailed specifications and relationships to agents and cities.
+
+#### Schema Location
+`src/api/apartment/content-types/apartment/schema.json`
+
+#### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| title | String | Yes | Property title/headline |
+| description | Text | No | Detailed property description |
+| slug | UID | No | URL-friendly identifier (auto-generated from title) |
+| price | Decimal | Yes | Rental/sale price |
+| address | String | Yes | Full street address |
+| bedrooms | Integer | No | Number of bedrooms (min: 0) |
+| bathrooms | Integer | No | Number of bathrooms (min: 0) |
+| area | Decimal | No | Square footage/area (min: 0) |
+| images | Media (multiple) | No | Property photos |
+| agent | Relation | Yes | Reference to Agent (many-to-one) |
+| city | Relation | Yes | Reference to City (many-to-one) |
+
+#### Draft & Publish
+
+Apartments support the draft/publish workflow:
+- **Draft**: Listing is not publicly visible
+- **Published**: Listing is visible via API
+
+#### Example JSON Structure
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "title": "Modern 2BR Apartment in Downtown",
+      "description": "Beautiful modern apartment with city views, hardwood floors, and stainless steel appliances",
+      "slug": "modern-2br-apartment-in-downtown",
+      "price": 2500.00,
+      "address": "123 Main Street, Unit 4B",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area": 1200.50,
+      "images": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "url": "/uploads/apt_living_room.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          },
+          {
+            "id": 2,
+            "attributes": {
+              "url": "/uploads/apt_kitchen.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          }
+        ]
+      },
+      "agent": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "name": "Sarah Johnson",
+            "email": "sarah@realestate.com"
+          }
+        }
+      },
+      "city": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "name": "San Francisco",
+            "country": "United States"
+          }
+        }
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T12:00:00.000Z",
+      "publishedAt": "2025-01-10T10:00:00.000Z"
+    }
+  }
+}
+```
+
+#### Creating Apartments
+
+**Via Admin Panel:**
+1. Navigate to Content Manager > Apartments
+2. Click "Create new entry"
+3. Fill in title, price, and address (required)
+4. Select agent and city (required)
+5. Add description, bedrooms, bathrooms, area (optional)
+6. Upload property images (optional)
+7. Click "Save" (draft) or "Publish"
+
+**Via API:**
+
+```bash
+curl -X POST http://localhost:1337/api/apartments \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Luxury 3BR Condo",
+      "description": "Spacious luxury condo with panoramic views",
+      "price": 3500,
+      "address": "456 Park Avenue",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 1800,
+      "agent": 1,
+      "city": 1
+    }
+  }'
+```
+
+### Agents
+
+Real estate agent profiles with contact information and portfolio tracking.
+
+#### Schema Location
+`src/api/agent/content-types/agent/schema.json`
+
+#### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| name | String | Yes | Agent's full name |
+| email | Email | Yes | Contact email address (must be unique) |
+| phone | String | Yes | Phone number |
+| avatar | Media (image) | No | Profile photo |
+| bio | Text | No | Agent biography |
+| apartments | Relation | No | Reference to Apartments (one-to-many) |
+
+#### Example JSON Structure
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "name": "Sarah Johnson",
+      "email": "sarah@realestate.com",
+      "phone": "+1-555-0123",
+      "bio": "Licensed real estate agent with 10+ years of experience in residential properties",
+      "avatar": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "url": "/uploads/agent_sarah.jpg",
+            "name": "agent_sarah.jpg"
+          }
+        }
+      },
+      "apartments": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "title": "Modern 2BR Apartment in Downtown",
+              "price": 2500
+            }
+          },
+          {
+            "id": 2,
+            "attributes": {
+              "title": "Luxury 3BR Condo",
+              "price": 3500
+            }
+          }
+        ]
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T00:00:00.000Z"
+    }
+  }
+}
+```
+
+#### Creating Agents
+
+**Via Admin Panel:**
+1. Navigate to Content Manager > Agents
+2. Click "Create new entry"
+3. Enter name, email, and phone (required)
+4. Add bio (optional)
+5. Upload avatar image (optional)
+6. Click "Save"
+
+**Via API:**
+
+```bash
+curl -X POST http://localhost:1337/api/agents \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "name": "Michael Chen",
+      "email": "michael@realestate.com",
+      "phone": "+1-555-0456",
+      "bio": "Specializing in urban properties and first-time homebuyers"
+    }
+  }'
+```
+
+### Cities
+
+Geographic location directory with country/region organization.
+
+#### Schema Location
+`src/api/city/content-types/city/schema.json`
+
+#### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| name | String | Yes | City name |
+| slug | UID | No | URL-friendly identifier (auto-generated from name) |
+| country | String | Yes | Country name |
+| region | String | No | State/province/region |
+| description | Text | No | City description |
+| image | Media (image) | No | City photo |
+| apartments | Relation | No | Reference to Apartments (one-to-many) |
+
+#### Example JSON Structure
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "name": "San Francisco",
+      "slug": "san-francisco",
+      "country": "United States",
+      "region": "California",
+      "description": "A vibrant city known for tech innovation, cultural diversity, and iconic landmarks",
+      "image": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "url": "/uploads/sf_skyline.jpg",
+            "name": "sf_skyline.jpg"
+          }
+        }
+      },
+      "apartments": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "title": "Modern 2BR Apartment in Downtown"
+            }
+          },
+          {
+            "id": 3,
+            "attributes": {
+              "title": "Cozy Studio in Mission District"
+            }
+          }
+        ]
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T00:00:00.000Z"
+    }
+  }
+}
+```
+
+#### Creating Cities
+
+**Via Admin Panel:**
+1. Navigate to Content Manager > Cities
+2. Click "Create new entry"
+3. Enter name and country (required)
+4. Add slug (auto-generated), region, description (optional)
+5. Upload city image (optional)
+6. Click "Save"
+
+**Via API:**
+
+```bash
+curl -X POST http://localhost:1337/api/cities \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "name": "New York",
+      "slug": "new-york",
+      "country": "United States",
+      "region": "New York",
+      "description": "The city that never sleeps"
     }
   }'
 ```
@@ -383,7 +691,7 @@ Site-wide configuration and default SEO settings. Only one entry exists.
 
 ```bash
 curl -X PUT http://localhost:1337/api/global \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "data": {
@@ -636,7 +944,9 @@ Search engine optimization metadata.
 
 ## Relationships
 
-### Article ↔ Author
+### Blog Relationships
+
+#### Article ↔ Author
 
 **Type:** Many-to-One (many articles, one author)
 
@@ -659,7 +969,7 @@ curl "http://localhost:1337/api/authors/1?populate[articles]=*"
 curl "http://localhost:1337/api/articles?filters[author][id][$eq]=1"
 ```
 
-### Article ↔ Category
+#### Article ↔ Category
 
 **Type:** Many-to-One (many articles, one category)
 
@@ -682,7 +992,60 @@ curl "http://localhost:1337/api/categories/1?populate[articles]=*"
 curl "http://localhost:1337/api/articles?filters[category][slug][$eq]=technology"
 ```
 
-### Relationship Diagram
+### Real Estate Relationships
+
+#### Apartment ↔ Agent
+
+**Type:** Many-to-One (many apartments, one agent)
+
+An apartment must have one agent, and an agent can manage many apartments.
+
+**Configuration:**
+- Apartment side: `agent` field (relation to Agent, required)
+- Agent side: `apartments` field (relation to Apartment)
+
+**Querying:**
+
+```bash
+# Get apartment with agent
+curl "http://localhost:1337/api/apartments/1?populate[agent]=*"
+
+# Get agent with all apartments
+curl "http://localhost:1337/api/agents/1?populate[apartments]=*"
+
+# Get all apartments by specific agent
+curl "http://localhost:1337/api/apartments?filters[agent][id][$eq]=1"
+```
+
+#### Apartment ↔ City
+
+**Type:** Many-to-One (many apartments, one city)
+
+An apartment must be located in one city, and a city can have many apartments.
+
+**Configuration:**
+- Apartment side: `city` field (relation to City, required)
+- City side: `apartments` field (relation to Apartment)
+
+**Querying:**
+
+```bash
+# Get apartment with city
+curl "http://localhost:1337/api/apartments/1?populate[city]=*"
+
+# Get city with all apartments
+curl "http://localhost:1337/api/cities/1?populate[apartments]=*"
+
+# Get all apartments in specific city
+curl "http://localhost:1337/api/apartments?filters[city][slug][$eq]=san-francisco"
+
+# Get all apartments with both agent and city
+curl "http://localhost:1337/api/apartments?populate[agent]=*&populate[city]=*"
+```
+
+### Relationship Diagrams
+
+#### Blog Relationships
 
 ```
 ┌─────────────┐
@@ -715,9 +1078,60 @@ curl "http://localhost:1337/api/articles?filters[category][slug][$eq]=technology
 └─────────────┘
 ```
 
+#### Real Estate Relationships
+
+```
+┌──────────────────────────────────────────┐
+│              AGENT (1)                   │
+│                                          │
+│ - name (required)                       │
+│ - email (required, unique)              │
+│ - phone (required)                      │
+│ - avatar (optional image)               │
+│ - bio (optional text)                   │
+│ - apartments (one-to-many)              │
+└────────────────────┬─────────────────────┘
+                     │
+                     │ 1:N (Agent has many Apartments)
+                     │
+                     ▼
+┌──────────────────────────────────────────┐
+│            APARTMENT (N)                  │
+│                                          │
+│ - title (required)                      │
+│ - description (optional)                │
+│ - slug (optional, auto-generated)       │
+│ - price (required)                      │
+│ - address (required)                    │
+│ - bedrooms (optional)                   │
+│ - bathrooms (optional)                  │
+│ - area (optional)                       │
+│ - images (optional, multiple)           │
+│ - agent (M:1 - REQUIRED)                │
+│ - city (M:1 - REQUIRED)                 │
+└────────────┬─────────────────────────────┘
+             │
+             │ M:1 (Many Apartments in one City)
+             │
+             ▼
+       ┌─────────────────────────────────┐
+       │          CITY (1)               │
+       │                                 │
+       │ - name (required)              │
+       │ - slug (optional, auto-gen)    │
+       │ - country (required)           │
+       │ - region (optional)            │
+       │ - description (optional)       │
+       │ - image (optional)             │
+       │ - apartments (one-to-many)     │
+       └─────────────────────────────────┘
+```
+
 ## Content Workflows
 
-### Creating a Complete Blog Post
+### Blog Workflows
+
+#### Creating a Complete Blog Post
 
 1. **Create Author** (if not exists)
 2. **Create Category** (if not exists)
@@ -729,7 +1143,7 @@ curl "http://localhost:1337/api/articles?filters[category][slug][$eq]=technology
 4. **Save as Draft** for review
 5. **Publish** when ready
 
-### Managing Content States
+#### Managing Article States
 
 Articles support draft and publish states:
 
@@ -743,6 +1157,89 @@ Articles support draft and publish states:
 4. Publish when ready
 5. Update and republish as needed
 6. Unpublish to take offline (returns to draft)
+
+### Real Estate Workflows
+
+#### Creating a Complete Property Listing
+
+1. **Create City** (if not exists):
+   - Add city name and country
+   - Optionally add region and description
+   - Upload city image
+
+2. **Create Agent** (if not exists):
+   - Add name, email, and phone (all required)
+   - Optionally add bio and avatar
+
+3. **Create Apartment**:
+   - Add title, price, and address (required)
+   - Select agent and city (required)
+   - Add bedrooms, bathrooms, and area (optional)
+   - Upload property images (multiple)
+   - Add detailed description
+
+4. **Save as Draft** for review
+5. **Publish** when ready to list
+
+#### Managing Apartment Listing States
+
+Apartments support draft and publish states:
+
+- **Draft**: Listing is not publicly visible via API
+- **Published**: Listing is live and searchable
+
+**Workflow:**
+1. Create apartment (automatically draft)
+2. Add all property details and images
+3. Verify agent and city assignments
+4. Publish when listing is complete
+5. Update details as needed and republish
+6. Unpublish to take offline (returns to draft)
+
+#### Location-Based Search Workflow
+
+1. **Browse by City**:
+   ```bash
+   # Get all cities
+   curl "http://localhost:1337/api/cities"
+
+   # Get apartments in a specific city
+   curl "http://localhost:1337/api/apartments?filters[city][slug][$eq]=san-francisco&populate=*"
+   ```
+
+2. **Filter by Price Range**:
+   ```bash
+   # Find apartments under $3000
+   curl "http://localhost:1337/api/apartments?filters[price][$lt]=3000&populate=*"
+
+   # Find apartments between $2000-$4000
+   curl "http://localhost:1337/api/apartments?filters[price][$gte]=2000&filters[price][$lte]=4000&populate=*"
+   ```
+
+3. **Filter by Specifications**:
+   ```bash
+   # Find 2+ bedroom apartments
+   curl "http://localhost:1337/api/apartments?filters[bedrooms][$gte]=2&populate=*"
+
+   # Find apartments with 2 bathrooms in San Francisco
+   curl "http://localhost:1337/api/apartments?filters[bathrooms][$eq]=2&filters[city][slug][$eq]=san-francisco&populate=*"
+   ```
+
+#### Agent Portfolio Management
+
+1. **View Agent Listings**:
+   ```bash
+   # Get agent with all their apartments
+   curl "http://localhost:1337/api/agents/1?populate[apartments][populate]=city"
+   ```
+
+2. **Assign Apartment to Different Agent**:
+   ```bash
+   curl -X PUT "http://localhost:1337/api/apartments/1" \
+     -H "Authorization: Bearer YOUR_API_TOKEN" \
+     -H "Content-Type: application/json" \
+     -d '{"data": {"agent": 2}}'
+   ```
 
 ## Best Practices
 
