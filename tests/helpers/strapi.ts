@@ -1,27 +1,14 @@
-import { createStrapi } from '@strapi/strapi';
+import { createStrapi, Core } from '@strapi/strapi';
 import fs from 'fs';
 import path from 'path';
 
-let instance;
+let instance: Core.Strapi | undefined;
 
 export async function setupStrapi() {
   if (!instance) {
-    // Set test database to avoid overwriting development data
-    process.env.DATABASE_CLIENT = 'sqlite';
-    process.env.DATABASE_FILENAME = '.tmp/test.db';
-    process.env.PORT = '1338'; // Use a different port for testing
-    
-    // Auth secrets
-    process.env.APP_KEYS = 'testKey1,testKey2';
-    process.env.API_TOKEN_SALT = 'testApiTokenSalt';
-    process.env.ADMIN_JWT_SECRET = 'testAdminJwtSecret';
-    process.env.TRANSFER_TOKEN_SALT = 'testTransferTokenSalt';
-    process.env.JWT_SECRET = 'testJwtSecret';
-    process.env.ENCRYPTION_KEY = 'testEncryptionKey123456789012345678901234'; // 24+ chars
-
     instance = await createStrapi({
       appDir: process.cwd(),
-      distDir: process.cwd() + '/dist', 
+      distDir: path.join(process.cwd(), 'dist'), 
     });
 
     await instance.load();
@@ -33,21 +20,17 @@ export async function setupStrapi() {
 export async function cleanupStrapi() {
   if (!instance) return;
 
-  const dbSettings = instance.config.get('database.connection.connection');
+  const dbSettings = instance.config.get('database.connection.connection') as any;
 
-  // Close server
-  await instance.server.httpServer.close();
-
-  // Close database connection
-  await instance.db.connection.destroy();
+  await instance.destroy();
   
   // Cleanup test database file if using sqlite
   if (dbSettings && dbSettings.filename) {
     const dbPath = dbSettings.filename;
     if (fs.existsSync(dbPath)) {
-      fs.unlinkSync(dbPath);
+      await fs.promises.unlink(dbPath);
     }
   }
   
-  instance = null;
+  instance = undefined;
 }
