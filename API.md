@@ -1,6 +1,6 @@
 # API Documentation
 
-Market MiniApp provides a RESTful API for managing blog content. All endpoints follow Strapi's REST API conventions.
+Market MiniApp provides a RESTful API for managing both blog content and real estate listings. All endpoints follow Strapi's REST API conventions.
 
 ## Base URL
 
@@ -468,6 +468,611 @@ DELETE /api/categories/:id
 
 **Authentication:** Required
 
+## Apartments
+
+### List Apartments
+
+```http
+GET /api/apartments
+```
+
+**Query Parameters:**
+
+- `sort` - Sort by field (e.g., `price:asc`, `createdAt:desc`)
+- `filters` - Filter results (see Filtering section)
+- `populate` - Include relations (e.g., `populate=*` for all)
+- `pagination[page]` - Page number (default: 1)
+- `pagination[pageSize]` - Items per page (default: 25)
+
+**Example:**
+
+```bash
+# Get all published apartments with agent and city
+curl "http://localhost:1337/api/apartments?populate[agent]=*&populate[city]=*"
+
+# Get apartments sorted by price ascending
+curl "http://localhost:1337/api/apartments?sort=price:asc"
+
+# Get apartments in a specific city
+curl "http://localhost:1337/api/apartments?filters[city][slug][$eq]=san-francisco&populate=*"
+
+# Get apartments with 2+ bedrooms under $3000
+curl "http://localhost:1337/api/apartments?filters[bedrooms][$gte]=2&filters[price][$lt]=3000&populate=*"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "attributes": {
+        "title": "Modern 2BR Apartment in Downtown",
+        "description": "Beautiful modern apartment with city views",
+        "slug": "modern-2br-apartment-in-downtown",
+        "price": 2500.00,
+        "address": "123 Main Street, Unit 4B",
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "area": 1200.50,
+        "createdAt": "2025-01-10T00:00:00.000Z",
+        "updatedAt": "2025-01-10T12:00:00.000Z",
+        "publishedAt": "2025-01-10T10:00:00.000Z"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}
+```
+
+### Get Single Apartment
+
+```http
+GET /api/apartments/:id
+```
+
+**Example:**
+
+```bash
+# Get apartment by ID with all relations and images
+curl "http://localhost:1337/api/apartments/1?populate=*"
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "title": "Modern 2BR Apartment in Downtown",
+      "description": "Beautiful modern apartment with city views, hardwood floors, and stainless steel appliances",
+      "slug": "modern-2br-apartment-in-downtown",
+      "price": 2500.00,
+      "address": "123 Main Street, Unit 4B",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area": 1200.50,
+      "images": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "name": "living_room.jpg",
+              "url": "/uploads/apt_living_123.jpg",
+              "mime": "image/jpeg",
+              "width": 1920,
+              "height": 1080
+            }
+          }
+        ]
+      },
+      "agent": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "name": "Sarah Johnson",
+            "email": "sarah@realestate.com",
+            "phone": "+1-555-0123"
+          }
+        }
+      },
+      "city": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "name": "San Francisco",
+            "slug": "san-francisco",
+            "country": "United States"
+          }
+        }
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T12:00:00.000Z",
+      "publishedAt": "2025-01-10T10:00:00.000Z"
+    }
+  }
+}
+```
+
+### Create Apartment
+
+```http
+POST /api/apartments
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "title": "Luxury 3BR Condo",
+    "description": "Spacious luxury condo with panoramic views",
+    "price": 3500,
+    "address": "456 Park Avenue",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 1800,
+    "agent": 1,
+    "city": 1
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X POST http://localhost:1337/api/apartments \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Luxury 3BR Condo",
+      "description": "Spacious luxury condo with panoramic views",
+      "price": 3500,
+      "address": "456 Park Avenue",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 1800,
+      "agent": 1,
+      "city": 1
+    }
+  }'
+```
+
+### Update Apartment
+
+```http
+PUT /api/apartments/:id
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "price": 2800,
+    "description": "Updated description with new features"
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X PUT http://localhost:1337/api/apartments/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "price": 2800
+    }
+  }'
+```
+
+### Delete Apartment
+
+```http
+DELETE /api/apartments/:id
+```
+
+**Authentication:** Required
+
+**Example:**
+
+```bash
+curl -X DELETE http://localhost:1337/api/apartments/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+## Agents
+
+### List Agents
+
+```http
+GET /api/agents
+```
+
+**Example:**
+
+```bash
+# Get all agents with their apartment listings
+curl "http://localhost:1337/api/agents?populate[apartments][populate]=city"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "attributes": {
+        "name": "Sarah Johnson",
+        "email": "sarah@realestate.com",
+        "phone": "+1-555-0123",
+        "bio": "Licensed real estate agent with 10+ years of experience",
+        "createdAt": "2025-01-10T00:00:00.000Z",
+        "updatedAt": "2025-01-10T00:00:00.000Z"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}
+```
+
+### Get Single Agent
+
+```http
+GET /api/agents/:id
+```
+
+**Example:**
+
+```bash
+# Get agent with avatar and all apartments
+curl "http://localhost:1337/api/agents/1?populate=*"
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "name": "Sarah Johnson",
+      "email": "sarah@realestate.com",
+      "phone": "+1-555-0123",
+      "bio": "Licensed real estate agent with 10+ years of experience in residential properties",
+      "avatar": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "url": "/uploads/agent_sarah_123.jpg",
+            "name": "agent_sarah.jpg"
+          }
+        }
+      },
+      "apartments": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "title": "Modern 2BR Apartment in Downtown",
+              "price": 2500
+            }
+          },
+          {
+            "id": 2,
+            "attributes": {
+              "title": "Luxury 3BR Condo",
+              "price": 3500
+            }
+          }
+        ]
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T00:00:00.000Z"
+    }
+  }
+}
+```
+
+### Create Agent
+
+```http
+POST /api/agents
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "name": "Michael Chen",
+    "email": "michael@realestate.com",
+    "phone": "+1-555-0456",
+    "bio": "Specializing in urban properties and first-time homebuyers"
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X POST http://localhost:1337/api/agents \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "name": "Michael Chen",
+      "email": "michael@realestate.com",
+      "phone": "+1-555-0456",
+      "bio": "Specializing in urban properties and first-time homebuyers"
+    }
+  }'
+```
+
+### Update Agent
+
+```http
+PUT /api/agents/:id
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "phone": "+1-555-0789",
+    "bio": "Updated agent biography."
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X PUT http://localhost:1337/api/agents/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "phone": "+1-555-0789"
+    }
+  }'
+```
+
+### Delete Agent
+
+```http
+DELETE /api/agents/:id
+```
+
+**Authentication:** Required
+
+**Example:**
+
+```bash
+curl -X DELETE http://localhost:1337/api/agents/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+## Cities
+
+### List Cities
+
+```http
+GET /api/cities
+```
+
+**Example:**
+
+```bash
+# Get all cities
+curl "http://localhost:1337/api/cities"
+
+# Get cities with apartment count
+curl "http://localhost:1337/api/cities?populate[apartments][fields][0]=id"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "attributes": {
+        "name": "San Francisco",
+        "slug": "san-francisco",
+        "country": "United States",
+        "region": "California",
+        "description": "A vibrant city known for tech innovation and cultural diversity",
+        "createdAt": "2025-01-10T00:00:00.000Z",
+        "updatedAt": "2025-01-10T00:00:00.000Z"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}
+```
+
+### Get Single City
+
+```http
+GET /api/cities/:id
+```
+
+**Example:**
+
+```bash
+# Get city with all its apartments
+curl "http://localhost:1337/api/cities/1?populate[apartments][populate]=agent"
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "name": "San Francisco",
+      "slug": "san-francisco",
+      "country": "United States",
+      "region": "California",
+      "description": "A vibrant city known for tech innovation, cultural diversity, and iconic landmarks",
+      "image": {
+        "data": {
+          "id": 1,
+          "attributes": {
+            "url": "/uploads/sf_skyline_123.jpg",
+            "name": "sf_skyline.jpg"
+          }
+        }
+      },
+      "apartments": {
+        "data": [
+          {
+            "id": 1,
+            "attributes": {
+              "title": "Modern 2BR Apartment in Downtown",
+              "price": 2500
+            }
+          },
+          {
+            "id": 3,
+            "attributes": {
+              "title": "Cozy Studio in Mission District",
+              "price": 1800
+            }
+          }
+        ]
+      },
+      "createdAt": "2025-01-10T00:00:00.000Z",
+      "updatedAt": "2025-01-10T00:00:00.000Z"
+    }
+  }
+}
+```
+
+### Create City
+
+```http
+POST /api/cities
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "name": "New York",
+    "slug": "new-york",
+    "country": "United States",
+    "region": "New York",
+    "description": "The city that never sleeps"
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X POST http://localhost:1337/api/cities \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "name": "New York",
+      "slug": "new-york",
+      "country": "United States",
+      "region": "New York",
+      "description": "The city that never sleeps"
+    }
+  }'
+```
+
+### Update City
+
+```http
+PUT /api/cities/:id
+```
+
+**Authentication:** Required
+
+**Request Body:**
+
+```json
+{
+  "data": {
+    "description": "An updated description for the city."
+  }
+}
+```
+
+**Example:**
+
+```bash
+curl -X PUT http://localhost:1337/api/cities/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "description": "An updated description for the city."
+    }
+  }'
+```
+
+### Delete City
+
+```http
+DELETE /api/cities/:id
+```
+
+**Authentication:** Required
+
+**Example:**
+
+```bash
+curl -X DELETE http://localhost:1337/api/cities/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
 ## Global Settings
 
 ### Get Global Settings
@@ -582,6 +1187,8 @@ Filter results using the `filters` parameter.
 
 ### Basic Filters
 
+**Blog Filters:**
+
 ```bash
 # Articles with specific title
 curl "http://localhost:1337/api/articles?filters[title][$eq]=Getting Started"
@@ -594,6 +1201,28 @@ curl "http://localhost:1337/api/articles?filters[author][id][$eq]=1"
 
 # Articles in specific category
 curl "http://localhost:1337/api/articles?filters[category][name][$eq]=Technology"
+```
+
+**Real Estate Filters:**
+
+```bash
+# Apartments in a specific city
+curl "http://localhost:1337/api/apartments?filters[city][slug][$eq]=san-francisco"
+
+# Apartments by a specific agent
+curl "http://localhost:1337/api/apartments?filters[agent][id][$eq]=1"
+
+# Apartments with exact price
+curl "http://localhost:1337/api/apartments?filters[price][$eq]=2500"
+
+# Apartments with 2 bedrooms
+curl "http://localhost:1337/api/apartments?filters[bedrooms][$eq]=2"
+
+# Find agent by email
+curl "http://localhost:1337/api/agents?filters[email][$eq]=sarah@realestate.com"
+
+# Cities in a specific country
+curl "http://localhost:1337/api/cities?filters[country][$eq]=United States"
 ```
 
 ### Filter Operators
@@ -618,6 +1247,8 @@ curl "http://localhost:1337/api/articles?filters[category][name][$eq]=Technology
 
 ### Complex Filters
 
+**Blog Examples:**
+
 ```bash
 # Multiple conditions (AND)
 curl "http://localhost:1337/api/articles?\
@@ -633,6 +1264,38 @@ filters[$or][1][title][$contains]=API"
 curl "http://localhost:1337/api/articles?\
 filters[publishedAt][$gte]=2025-01-01&\
 filters[publishedAt][$lte]=2025-12-31"
+```
+
+**Real Estate Examples:**
+
+```bash
+# Price range with minimum bedrooms
+curl "http://localhost:1337/api/apartments?\
+filters[price][$gte]=2000&\
+filters[price][$lte]=4000&\
+filters[bedrooms][$gte]=2"
+
+# Apartments in multiple cities (OR)
+curl "http://localhost:1337/api/apartments?\
+filters[$or][0][city][slug][$eq]=san-francisco&\
+filters[$or][1][city][slug][$eq]=new-york"
+
+# Large apartments (1500+ sqft) with 2+ bathrooms under $3500
+curl "http://localhost:1337/api/apartments?\
+filters[area][$gte]=1500&\
+filters[bathrooms][$gte]=2&\
+filters[price][$lt]=3500"
+
+# Apartments by specific agent in a specific city
+curl "http://localhost:1337/api/apartments?\
+filters[agent][id][$eq]=1&\
+filters[city][slug][$eq]=san-francisco&\
+populate=*"
+
+# Cities in specific region
+curl "http://localhost:1337/api/cities?\
+filters[country][$eq]=United States&\
+filters[region][$eq]=California"
 ```
 
 ## Sorting
