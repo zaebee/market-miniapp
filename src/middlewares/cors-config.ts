@@ -1,7 +1,7 @@
 import cors from '@koa/cors';
 
 // CORS configuration
-export default () => {
+export default (config: any, { strapi }: any) => {
   // Allowed origins - should be configured via environment variables
   const allowedOrigins = process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',')

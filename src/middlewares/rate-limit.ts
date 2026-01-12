@@ -5,12 +5,6 @@ import type { Context } from 'koa';
 // For production, use Redis store: https://github.com/koajs/ratelimit#stores
 const db = new Map();
 
-// Rate limiting middleware factory
-export default (config: { tier?: 'api' | 'auth' | 'contentCreation' } = {}) => {
-  const tier = config.tier || 'api';
-  return rateLimitConfigs[tier];
-};
-
 // Rate limiting configurations
 const rateLimitConfigs = {
   // General API rate limit: 100 requests per 15 minutes per IP
@@ -68,4 +62,10 @@ const rateLimitConfigs = {
     max: 30,
     disableHeader: false,
   }),
+};
+
+// Rate limiting middleware factory
+export default (config: { tier?: 'api' | 'auth' | 'contentCreation' } = {}, { strapi }: any) => {
+  const tier = config.tier || 'api';
+  return rateLimitConfigs[tier];
 };

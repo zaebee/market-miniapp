@@ -1,9 +1,8 @@
 import helmet from 'koa-helmet';
 import type { Context, Next } from 'koa';
 
-// Security headers configuration using Helmet
-export default () => {
-  // First apply helmet middleware
+export default (config: any, { strapi }: any) => {
+  // First create helmet middleware
   const helmetMiddleware = helmet({
     // Content Security Policy
     contentSecurityPolicy: {
@@ -65,7 +64,7 @@ export default () => {
     xssFilter: true,
   });
 
-  // Return composed middleware
+  // Return middleware function
   return async (ctx: Context, next: Next) => {
     // Apply helmet first
     await helmetMiddleware(ctx, async () => {

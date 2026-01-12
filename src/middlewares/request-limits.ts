@@ -1,7 +1,7 @@
 import type { Context, Next } from 'koa';
 
 // Default export for Strapi middleware registration
-export default (config: any = {}) => {
+export default (config: any = {}, { strapi }: any) => {
   const middleware = config.middleware;
 
   if (middleware === 'queryComplexityLimit') {
