@@ -23,6 +23,7 @@
     "@strapi/strapi": "5.33.2",
     "better-sqlite3": "12.4.1",
     "fs-extra": "^10.0.0",
+    "koa-ratelimit": "^6.0.0",
     "mime-types": "^2.1.27",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -31,7 +32,9 @@
     "vibe-kanban-web-companion": "^0.0.5"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.12",
+    "@types/koa-ratelimit": "^5.0.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
