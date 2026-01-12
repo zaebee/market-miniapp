@@ -3,7 +3,7 @@ export default () => ({
     enabled: true,
     config: {
       defaultLocale: 'en',
-      locales: ['en', 'ru'],
+      locales: ['en', 'ru', 'cs', 'pl'],
     },
   },
 });
