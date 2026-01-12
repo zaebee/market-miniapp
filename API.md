@@ -1338,8 +1338,8 @@ Combine locale with other filters:
 # Get Russian apartments in a specific city
 curl "http://localhost:1337/api/apartments?locale=ru&filters[city][slug][$eq]=san-francisco"
 
-# Get English agents with 2+ bedrooms apartments
-curl "http://localhost:1337/api/agents?locale=en&populate[apartments][filters][bedrooms][$gte]=2"
+# Get English agents who have apartments with 2+ bedrooms
+curl "http://localhost:1337/api/agents?locale=en&filters[apartments][bedrooms][$gte]=2"
 ```
 
 ## Filtering
