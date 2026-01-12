@@ -1181,6 +1181,167 @@ PUT /api/about
 
 **Authentication:** Required
 
+## Internationalization (i18n)
+
+Apartments, Agents, and Cities support multiple languages (English and Russian). Strapi's i18n plugin manages translations.
+
+### Default Locale
+
+All content is created with a default locale (`en`). The API returns content in the default locale unless specified otherwise.
+
+### Locale Query Parameter
+
+Retrieve content in a specific locale using the `locale` parameter:
+
+```bash
+# Get apartments in Russian
+curl "http://localhost:1337/api/apartments?locale=ru"
+
+# Get specific apartment in Russian
+curl "http://localhost:1337/api/apartments/1?locale=ru"
+
+# Get agents in English (default)
+curl "http://localhost:1337/api/agents?locale=en"
+
+# Get cities in Russian with relations
+curl "http://localhost:1337/api/cities?locale=ru&populate=*"
+```
+
+### Creating Localized Content
+
+When creating content, specify the locale in the request:
+
+```bash
+# Create apartment in English (default)
+curl -X POST http://localhost:1337/api/apartments \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Modern Apartment",
+      "description": "Beautiful modern apartment",
+      "address": "123 Main St",
+      "price": 2500,
+      "bedrooms": 2,
+      "locale": "en",
+      "agent": 1,
+      "city": 1
+    }
+  }'
+
+# Create Russian translation
+curl -X POST http://localhost:1337/api/apartments \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Современная квартира",
+      "description": "Красивая современная квартира",
+      "address": "ул. Главная, 123",
+      "price": 2500,
+      "bedrooms": 2,
+      "locale": "ru",
+      "agent": 1,
+      "city": 1
+    }
+  }'
+```
+
+### Localized Fields
+
+**Agent:**
+- `name` - Localized
+- `bio` - Localized
+- `email`, `phone`, `avatar` - Shared across locales
+
+**City:**
+- `name` - Localized
+- `country` - Localized
+- `region` - Localized
+- `description` - Localized
+- `image` - Shared across locales
+
+**Apartment:**
+- `title` - Localized
+- `description` - Localized
+- `address` - Localized
+- `price`, `bedrooms`, `bathrooms`, `area`, `images` - Shared across locales
+- Relations (`agent`, `city`) - Shared across locales
+
+### Get All Localizations
+
+Retrieve all localizations of an entry:
+
+```bash
+# Get apartment with all localizations
+curl "http://localhost:1337/api/apartments/1?populate=localizations"
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": 1,
+    "attributes": {
+      "title": "Modern Apartment",
+      "description": "Beautiful modern apartment",
+      "locale": "en",
+      "localizations": {
+        "data": [
+          {
+            "id": 2,
+            "attributes": {
+              "title": "Современная квартира",
+              "description": "Красивая современная квартира",
+              "locale": "ru"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Update Localized Content
+
+Update content in a specific locale:
+
+```bash
+# Update English version
+curl -X PUT http://localhost:1337/api/apartments/1 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Updated Modern Apartment"
+    }
+  }'
+
+# Update Russian version (use the localization ID)
+curl -X PUT http://localhost:1337/api/apartments/2 \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "title": "Обновленная современная квартира"
+    }
+  }'
+```
+
+### Filter by Locale
+
+Combine locale with other filters:
+
+```bash
+# Get Russian apartments in a specific city
+curl "http://localhost:1337/api/apartments?locale=ru&filters[city][slug][$eq]=san-francisco"
+
+# Get English agents who have apartments with 2+ bedrooms
+curl "http://localhost:1337/api/agents?locale=en&filters[apartments][bedrooms][$gte]=2"
+```
+
 ## Filtering
 
 Filter results using the `filters` parameter.
