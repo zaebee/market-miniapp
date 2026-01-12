@@ -2,8 +2,8 @@
   "collectionName": "components_shared_sliders",
   "info": {
     "displayName": "Slider",
-    "icon": "address-book",
-    "description": ""
+    "icon": "picture",
+    "description": "A reusable image slider/carousel component for displaying multiple images"
   },
   "options": {},
   "attributes": {

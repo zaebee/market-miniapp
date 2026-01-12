@@ -26,7 +26,7 @@ export interface SharedQuote extends Struct.ComponentSchema {
 export interface SharedRichText extends Struct.ComponentSchema {
   collectionName: 'components_shared_rich_texts';
   info: {
-    description: '';
+    description: 'A reusable rich text component for body content with formatting support';
     displayName: 'Rich text';
     icon: 'align-justify';
   };
@@ -38,9 +38,9 @@ export interface SharedRichText extends Struct.ComponentSchema {
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
-    description: '';
+    description: 'SEO metadata for pages including meta title, description, and social sharing image';
     displayName: 'Seo';
-    icon: 'allergies';
+    icon: 'search';
     name: 'Seo';
   };
   attributes: {
@@ -53,9 +53,9 @@ export interface SharedSeo extends Struct.ComponentSchema {
 export interface SharedSlider extends Struct.ComponentSchema {
   collectionName: 'components_shared_sliders';
   info: {
-    description: '';
+    description: 'A reusable image slider/carousel component for displaying multiple images';
     displayName: 'Slider';
-    icon: 'address-book';
+    icon: 'picture';
   };
   attributes: {
     files: Schema.Attribute.Media<'images', true>;

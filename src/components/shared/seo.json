@@ -2,9 +2,9 @@
   "collectionName": "components_shared_seos",
   "info": {
     "name": "Seo",
-    "icon": "allergies",
+    "icon": "search",
     "displayName": "Seo",
-    "description": ""
+    "description": "SEO metadata for pages including meta title, description, and social sharing image"
   },
   "options": {},
   "attributes": {
