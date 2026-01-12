@@ -32,6 +32,7 @@
     "vibe-kanban-web-companion": "^0.0.5"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.12",
     "@types/koa-ratelimit": "^5.0.5",
     "@types/node": "^20",

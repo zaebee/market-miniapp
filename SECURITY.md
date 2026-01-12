@@ -10,8 +10,8 @@ We use `strapi::security` which includes [Helmet.js](https://helmetjs.github.io/
 ### 2. CORS Configuration
 CORS is configured via `strapi::cors` to restrict which domains can access the API.
 
-### 3. Rate Limiting (Planned)
-Rate limiting is being implemented to prevent brute-force attacks and DDoS.
+### 3. Rate Limiting
+Rate limiting is implemented to prevent brute-force attacks and DDoS.
 
 ### 4. Input Validation
 All incoming data is validated against the defined schemas.

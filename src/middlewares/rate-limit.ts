@@ -1,9 +1,10 @@
-import { Core } from '@strapi/strapi';
 import ratelimit from 'koa-ratelimit';
 
-export default (config: any, { strapi }: { strapi: Core.Strapi }) => {
-  const db = new Map();
+// The database map should be created once in the module scope,
+// not inside the middleware factory function.
+const db = new Map();
 
+export default (config: any) => {
   return ratelimit({
     driver: 'memory',
     db: db,

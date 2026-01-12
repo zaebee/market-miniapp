@@ -1,6 +1,7 @@
 import path from 'path';
+import { StrapiEnv } from '../src/types';
 
-export default ({ env }: { env: any }) => {
+export default ({ env }: { env: StrapiEnv }) => {
   const client = env('DATABASE_CLIENT', 'sqlite') as 'mysql' | 'postgres' | 'sqlite';
 
   const connections = {
