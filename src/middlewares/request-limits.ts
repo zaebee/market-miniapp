@@ -38,12 +38,29 @@ export const requestSizeLimits = (options: {
     const contentLength = ctx.request.headers['content-length'];
 
     if (contentLength) {
-      const size = parseInt(contentLength);
-      const maxSize = parseLimit(jsonLimit);
+      const size = parseInt(contentLength, 10);
 
-      // For file uploads, use maxFileSize
-      const isFileUpload = ctx.request.headers['content-type']?.includes('multipart/form-data');
-      const limit = isFileUpload ? maxFileSize : maxSize;
+      // Validate that content-length is a valid number
+      if (isNaN(size) || size < 0) {
+        ctx.throw(400, 'Invalid Content-Length header');
+      }
+
+      // Determine appropriate limit based on content type
+      const contentType = ctx.request.headers['content-type'] || '';
+      let limit: number;
+
+      if (contentType.includes('multipart/form-data')) {
+        limit = maxFileSize;
+      } else if (contentType.includes('application/json')) {
+        limit = parseLimit(jsonLimit);
+      } else if (contentType.includes('application/x-www-form-urlencoded')) {
+        limit = parseLimit(formLimit);
+      } else if (contentType.includes('text/')) {
+        limit = parseLimit(textLimit);
+      } else {
+        // Default to JSON limit for unknown types
+        limit = parseLimit(jsonLimit);
+      }
 
       if (size > limit) {
         ctx.throw(413, `Request entity too large. Maximum size is ${formatBytes(limit)}.`);

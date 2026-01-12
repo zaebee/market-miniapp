@@ -97,36 +97,45 @@ export const sanitizers = {
 export const validators = {
   // Validate email
   isEmail: (email: string): boolean => {
+    if (typeof email !== 'string') return false;
     return validator.isEmail(email);
   },
 
   // Validate URL
   isUrl: (url: string): boolean => {
+    if (typeof url !== 'string') return false;
     return validator.isURL(url);
   },
 
   // Validate phone number (international format)
   isPhone: (phone: string): boolean => {
+    if (typeof phone !== 'string') return false;
     return validator.isMobilePhone(phone, 'any', { strictMode: false });
   },
 
   // Validate numeric value
   isNumeric: (value: string): boolean => {
+    if (typeof value !== 'string') return false;
     return validator.isNumeric(value);
   },
 
   // Validate positive integer
   isPositiveInt: (value: any): boolean => {
-    return validator.isInt(String(value), { min: 0 });
+    if (value === null || value === undefined) return false;
+    const stringValue = String(value);
+    if (!/^-?\d+$/.test(stringValue)) return false;
+    return validator.isInt(stringValue, { min: 0 });
   },
 
   // Validate decimal number
   isDecimal: (value: string): boolean => {
+    if (typeof value !== 'string') return false;
     return validator.isDecimal(value);
   },
 
   // Validate string length
   isLength: (str: string, min: number, max: number): boolean => {
+    if (typeof str !== 'string') return false;
     return validator.isLength(str, { min, max });
   },
 
@@ -134,6 +143,7 @@ export const validators = {
   isRequired: (value: any): boolean => {
     if (value === null || value === undefined) return false;
     if (typeof value === 'string') return value.trim().length > 0;
+    if (Array.isArray(value)) return value.length > 0;
     return true;
   },
 };

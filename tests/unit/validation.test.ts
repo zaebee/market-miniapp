@@ -41,6 +41,8 @@ describe('Validation Utilities', () => {
       expect(validators.isPositiveInt(-1)).toBe(false);
       expect(validators.isPositiveInt(1.5)).toBe(false);
       expect(validators.isPositiveInt('invalid')).toBe(false);
+      expect(validators.isPositiveInt(null)).toBe(false);
+      expect(validators.isPositiveInt(undefined)).toBe(false);
     });
   });
 
@@ -63,13 +65,24 @@ describe('Validation Utilities', () => {
       expect(validators.isRequired(123)).toBe(true);
       expect(validators.isRequired(true)).toBe(true);
       expect(validators.isRequired({})).toBe(true);
+      expect(validators.isRequired([1, 2, 3])).toBe(true);
     });
 
-    it('should reject null, undefined, and empty strings', () => {
+    it('should reject null, undefined, and empty values', () => {
       expect(validators.isRequired(null)).toBe(false);
       expect(validators.isRequired(undefined)).toBe(false);
       expect(validators.isRequired('')).toBe(false);
       expect(validators.isRequired('   ')).toBe(false);
+      expect(validators.isRequired([])).toBe(false);
+    });
+  });
+
+  describe('validators type guards', () => {
+    it('should handle non-string inputs safely', () => {
+      expect(validators.isEmail(123 as any)).toBe(false);
+      expect(validators.isUrl(null as any)).toBe(false);
+      expect(validators.isPhone(undefined as any)).toBe(false);
+      expect(validators.isLength(123 as any, 1, 10)).toBe(false);
     });
   });
 });

@@ -9,12 +9,16 @@ export default (config: any, { strapi }: any) => {
 
   return cors({
     // Origin validation function
-    origin: (ctx) => {
+    origin: (ctx): string => {
       const origin = ctx.request.header.origin;
 
-      // Allow requests with no origin (e.g., mobile apps, Postman)
+      // Allow requests with no origin only in development
+      // Production APIs should require origin header for security
       if (!origin) {
-        return '*';
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error('Origin header required in production');
+        }
+        return '*'; // Allow in development for tools like Postman
       }
 
       // Check if origin is in allowed list
@@ -22,18 +26,17 @@ export default (config: any, { strapi }: any) => {
         return origin;
       }
 
-      // In development, allow localhost with any port
-      if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) {
-        return origin;
+      // In development, allow localhost/127.0.0.1 with any port (strict regex)
+      if (process.env.NODE_ENV === 'development') {
+        const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+        if (localhostPattern.test(origin)) {
+          return origin;
+        }
+        // Fall through to rejection
       }
 
-      // For production, reject unauthorized origins
-      if (process.env.NODE_ENV === 'production') {
-        ctx.throw(403, `Origin ${origin} is not allowed by CORS policy`);
-      }
-
-      // Default: allow in non-production environments
-      return origin;
+      // Reject all unauthorized origins by throwing an error
+      throw new Error(`Origin ${origin} is not allowed by CORS policy`);
     },
 
     // Allowed HTTP methods
