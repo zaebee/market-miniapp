@@ -9,7 +9,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "{.cache/**,dist/**,package.json,node_modules/@strapi/**/**,node_modules/pluralize/**,node_modules/koa-range/**,database/**,public/**}"
+      "includeFiles": "{.cache/**,dist/**,config/**,package.json,node_modules/@strapi/**/**,node_modules/pluralize/**,node_modules/koa-range/**,node_modules/stream-slice/**,node_modules/koa-static/**,node_modules/sharp/**,node_modules/fs-extra/**,node_modules/file-type/**,node_modules/mime-types/**,node_modules/byte-size/**,database/**,public/**}"
     }
   }
 }

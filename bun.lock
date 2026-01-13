@@ -21,6 +21,7 @@
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-router-dom": "^6.0.0",
+        "stream-slice": "^0.1.2",
         "styled-components": "^6.0.0",
         "validator": "^13.15.26",
         "vibe-kanban-web-companion": "^0.0.5",
