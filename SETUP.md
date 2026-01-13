@@ -11,7 +11,8 @@ Complete setup instructions for Market MiniApp blog platform.
 5. [First Run](#first-run)
 6. [Demo Data](#demo-data)
 7. [Production Setup](#production-setup)
-8. [Troubleshooting](#troubleshooting)
+8. [Deployment to Vercel](#deployment-to-vercel)
+9. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -510,6 +511,40 @@ pg_dump -U strapi strapi_prod > backup_$(date +%Y%m%d).sql
 # Backup uploads
 tar -czf uploads_$(date +%Y%m%d).tar.gz public/uploads/
 ```
+
+## Deployment to Vercel
+
+### 1. Prerequisites
+- A Vercel account.
+- A GitHub/GitLab/Bitbucket repository with your project pushed.
+- A hosted PostgreSQL database (e.g., Vercel Postgres, Neon, AWS RDS).
+- (Optional) A Cloudinary account for media storage.
+
+### 2. Configuration
+The project is already configured with `vercel.json` and necessary dependencies.
+
+### 3. Environment Variables
+In your Vercel project settings, add the following environment variables:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `HOST` | Host address | `0.0.0.0` |
+| `PORT` | Port number | `1337` |
+| `APP_KEYS` | Strapi App Keys | `base64key1,base64key2` |
+| `API_TOKEN_SALT` | API Token Salt | `randomstring` |
+| `ADMIN_JWT_SECRET` | Admin JWT Secret | `randomstring` |
+| `JWT_SECRET` | JWT Secret | `randomstring` |
+| `TRANSFER_TOKEN_SALT` | Transfer Token Salt | `randomstring` |
+| `DATABASE_CLIENT` | Database Client | `postgres` |
+| `DATABASE_URL` | Connection String | `postgres://user:pass@host:port/db` |
+| `DATABASE_SSL` | Enable SSL | `true` |
+| `PUBLIC_URL` | Public URL of the app | `https://your-app.vercel.app` |
+| `CLOUDINARY_NAME` | Cloudinary Cloud Name | `my-cloud` |
+| `CLOUDINARY_KEY` | Cloudinary API Key | `123456789` |
+| `CLOUDINARY_SECRET` | Cloudinary API Secret | `abcdef` |
+
+### 4. Deploy
+Push your changes to your git repository. Vercel should automatically detect the `vercel.json` and deploy.
 
 ## Troubleshooting
 
