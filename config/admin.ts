@@ -19,4 +19,5 @@ export default ({ env }: { env: StrapiEnv }) => ({
     nps: env.bool('FLAG_NPS', true),
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
   },
+  locales: ['en', 'ru', 'pl', 'vi', 'th'],
 });

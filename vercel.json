@@ -9,7 +9,8 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "{.cache/**,dist/**,config/**,database/**,public/**,package.json,node_modules/**/*.js,node_modules/**/*.json,node_modules/**/*.node}"
+      "includeFiles": "{.cache/**,dist/**,config/**,database/**,public/**,package.json,node_modules/**/*.js,node_modules/**/*.json,node_modules/**/*.node}",
+      "excludeFiles": "{node_modules/**/*.md,node_modules/**/*.ts,node_modules/**/test/**,node_modules/**/tests/**,node_modules/**/*.map,node_modules/**/*.d.ts,node_modules/**/*.mjs,node_modules/**/esm/**,node_modules/**/es/**,node_modules/@img/sharp-libvips-linuxmusl-x64/**,node_modules/@swc/**,node_modules/typescript*/**,node_modules/@types/**,node_modules/vite/**,node_modules/@esbuild/**}"
     }
   }
 }
