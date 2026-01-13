@@ -9,7 +9,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "dist/**,package.json,node_modules/@strapi/**/package.json,node_modules/@strapi/**/schema.json"
+      "includeFiles": "{dist/**,package.json,node_modules/@strapi/**/package.json,node_modules/@strapi/**/schema.json}"
     }
   }
 }
