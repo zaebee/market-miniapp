@@ -9,7 +9,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "{dist/**,package.json,node_modules/@strapi/**,node_modules/pluralize/**,database/**,public/**}"
+      "includeFiles": "{.cache/**,dist/**,package.json,node_modules/@strapi/**/**,node_modules/pluralize/**,database/**,public/**}"
     }
   }
 }
