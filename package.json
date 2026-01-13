@@ -4,7 +4,7 @@
   "private": true,
   "description": "A Strapi application",
   "scripts": {
-    "build": "strapi build",
+    "build": "strapi build && if [ \"$VERCEL\" = \"1\" ]; then find node_modules -name '*.map' -type f -delete && find node_modules -name '*.d.ts' -type f -delete; fi",
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",
