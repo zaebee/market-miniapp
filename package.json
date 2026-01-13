@@ -4,7 +4,7 @@
   "private": true,
   "description": "A Strapi application",
   "scripts": {
-    "build": "bash scripts/vercel-prebuild.sh && strapi build",
+    "build": "strapi build && bash scripts/vercel-prebuild.sh",
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",

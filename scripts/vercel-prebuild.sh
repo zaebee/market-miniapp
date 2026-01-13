@@ -1,8 +1,8 @@
 #!/bin/bash
-# Vercel pre-build script to reduce node_modules size
-# Conservative cleanup - only remove clearly unnecessary build-time deps
+# Vercel POST-build script to reduce node_modules size
+# Runs AFTER strapi build completes, before Vercel bundles
 
-echo "🧹 Cleaning node_modules for Vercel deployment..."
+echo "🧹 Cleaning node_modules for Vercel deployment (post-build)..."
 
 # Remove build tools (definitely not needed at runtime)
 echo "  Removing build tools..."
