@@ -45,7 +45,10 @@ export default ({ env }: { env: StrapiEnv }) => {
     },
     sqlite: {
       connection: {
-        filename: path.join(__dirname, '..', '..', env('DATABASE_FILENAME', '.tmp/data.db')),
+        filename: (() => {
+          const filePath = env('DATABASE_FILENAME', process.env.VERCEL === '1' ? '/tmp/data.db' : '.tmp/data.db');
+          return path.isAbsolute(filePath) ? filePath : path.join(__dirname, '..', '..', filePath);
+        })(),
       },
       useNullAsDefault: true,
     },
