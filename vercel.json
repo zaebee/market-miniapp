@@ -9,8 +9,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "{.cache/**,dist/**,config/**,database/**,public/**,package.json,node_modules/**}",
-      "excludeFiles": "{node_modules/**/*.map,node_modules/**/*.d.ts,node_modules/**/test/**,node_modules/**/tests/**}"
+      "includeFiles": "{.cache/**,dist/**,config/**,database/**,public/**,package.json,node_modules/**/*.js,node_modules/**/*.json,node_modules/**/*.node}"
     }
   }
 }
