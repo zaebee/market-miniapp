@@ -1,6 +1,13 @@
 #!/bin/bash
 # Vercel POST-build script to reduce node_modules size
 # Runs AFTER strapi build completes, before Vercel bundles
+# Only runs on Vercel (skips CI/local builds)
+
+# Check if running on Vercel
+if [ "$VERCEL" != "1" ]; then
+  echo "⏭️  Skipping cleanup (not on Vercel)"
+  exit 0
+fi
 
 echo "🧹 Cleaning node_modules for Vercel deployment (post-build)..."
 
