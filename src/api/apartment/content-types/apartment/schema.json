@@ -16,9 +16,21 @@
     }
   },
   "attributes": {
+    "external_id": {
+      "type": "string",
+      "unique": true
+    },
     "title": {
       "type": "string",
       "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "seo_title": {
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -41,6 +53,10 @@
       "type": "decimal",
       "required": true
     },
+    "currency": {
+      "type": "string",
+      "maxLength": 3
+    },
     "address": {
       "type": "string",
       "required": true,
@@ -49,6 +65,10 @@
           "localized": true
         }
       }
+    },
+    "rooms": {
+      "type": "integer",
+      "min": 0
     },
     "bedrooms": {
       "type": "integer",
@@ -62,11 +82,17 @@
       "type": "decimal",
       "min": 0
     },
+    "area_total": {
+      "type": "decimal",
+      "min": 0
+    },
     "images": {
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "agent": {
       "type": "relation",
