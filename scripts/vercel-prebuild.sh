@@ -26,6 +26,15 @@ rm -rf node_modules/@img/sharp-win32-* 2>/dev/null
 echo "  Removing @formatjs/intl-displaynames..."
 rm -rf node_modules/@formatjs/intl-displaynames 2>/dev/null
 
+# NUCLEAR: Remove video players (40MB) - uncomment if you don't use video features
+echo "  Removing video player packages..."
+rm -rf node_modules/@mux 2>/dev/null
+rm -rf node_modules/hls.js 2>/dev/null
+
+# NUCLEAR: Remove date-fns ESM build (17MB) - we only use CJS
+echo "  Removing date-fns ESM build..."
+rm -rf node_modules/date-fns/esm 2>/dev/null
+
 # Remove source maps and TypeScript definitions (safe to remove)
 echo "  Removing .map and .d.ts files..."
 find node_modules -name "*.map" -type f -delete 2>/dev/null
