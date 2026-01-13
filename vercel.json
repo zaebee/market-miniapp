@@ -3,11 +3,11 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/server.js"
+      "destination": "/api"
     }
   ],
   "functions": {
-    "server.js": {
+    "api/index.js": {
       "maxDuration": 60,
       "includeFiles": "dist/**,package.json,node_modules/@strapi/**/package.json,node_modules/@strapi/**/schema.json"
     }
