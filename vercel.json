@@ -1,15 +1,20 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/server.js"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
+  "functions": {
+    "server.js": {
+      "maxDuration": 60,
+      "includeFiles": [
+        "dist/**",
+        "package.json",
+        "node_modules/@strapi/**/package.json",
+        "node_modules/@strapi/**/schema.json"
+      ]
     }
-  ]
+  }
 }
