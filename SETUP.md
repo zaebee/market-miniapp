@@ -534,7 +534,7 @@ In your Vercel project settings, add the following environment variables:
 | `API_TOKEN_SALT` | API Token Salt | `randomstring` |
 | `ADMIN_JWT_SECRET` | Admin JWT Secret | `randomstring` |
 | `JWT_SECRET` | JWT Secret | `randomstring` |
-| `TRANSFER_TOKEN_SALT`| Transfer Token Salt | `randomstring` |
+| `TRANSFER_TOKEN_SALT` | Transfer Token Salt | `randomstring` |
 | `DATABASE_CLIENT` | Database Client | `postgres` |
 | `DATABASE_URL` | Connection String | `postgres://user:pass@host:port/db` |
 | `DATABASE_SSL` | Enable SSL | `true` |
