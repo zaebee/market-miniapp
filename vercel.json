@@ -9,7 +9,8 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 60,
-      "includeFiles": "{.cache/**,dist/**,package.json,node_modules/@strapi/**,database/**,public/**}"
+      "includeFiles": "{.cache/**,dist/**,package.json,node_modules/@strapi/**,database/**,public/**}",
+      "excludeFiles": "{**/*.map,**/*.d.ts,node_modules/**/*.map,node_modules/**/*.d.ts}"
     }
   }
 }
